@@ -36,10 +36,9 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
               child: Consumer(
                 builder: (context, ref, child) {
                   final calculatorState = ref.watch(calculatorProvider);
-                  final num1String = calculatorState.num1.join('');
-                  final num2String = calculatorState.num2.join('');
+
                   return Text(
-                    '$num1String ${calculatorState.symbol} $num2String = ${calculatorState.result}',
+                    '${calculatorState.num1.join('')} ${calculatorState.symbol} ${calculatorState.num2.join('')} = ${calculatorState.result}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
