@@ -20,7 +20,7 @@ class CalculatorButton extends StatelessWidget {
         backgroundColor: color,
         minimumSize: const Size(double.infinity, 60.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(0.0),
+          borderRadius: BorderRadius.circular(14.0),
         ),
       ),
       child: Text(

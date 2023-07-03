@@ -6,10 +6,10 @@ final calculatorProvider =
 });
 
 class CalculatorState {
-  int num1 = 0;
-  int num2 = 0;
-  int result = 0;
-  String symbol = '';
+  int num1;
+  int num2;
+  int result;
+  String symbol;
 
   CalculatorState({
     this.num1 = 0,
