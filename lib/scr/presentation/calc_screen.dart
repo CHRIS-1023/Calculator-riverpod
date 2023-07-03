@@ -30,14 +30,16 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
           Expanded(
             flex: 1,
             child: Container(
-              decoration: const BoxDecoration(color: Colors.black),
+              decoration: const BoxDecoration(color: Colors.grey),
               alignment: Alignment.bottomRight,
               padding: const EdgeInsets.all(16.0),
               child: Consumer(
                 builder: (context, ref, child) {
                   final calculatorState = ref.watch(calculatorProvider);
+                  final num1String = calculatorState.num1.join('');
+                  final num2String = calculatorState.num2.join('');
                   return Text(
-                    '${calculatorState.num1} ${calculatorState.symbol} ${calculatorState.num2} = ${calculatorState.result}',
+                    '$num1String ${calculatorState.symbol} $num2String = ${calculatorState.result}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -52,21 +54,15 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
             flex: 2,
             child: GridView.count(
               crossAxisCount: 4,
-              crossAxisSpacing: 2,
-              mainAxisSpacing: 2,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
               children: [
                 ...specialCharacters.map(
                   (char) => CalculatorButton(
                     buttonText: char,
                     color: Colors.amber,
                     onPressed: () {
-                      if (char == '=') {
-                        calculateResult(ref.read(calculatorProvider));
-                      } else if (char == 'C') {
-                        clearCalculator(ref.read(calculatorProvider));
-                      } else {
-                        ref.read(calculatorProvider.notifier).setSymbol(char);
-                      }
+                      charCalc(char);
                     },
                   ),
                 ),
@@ -74,12 +70,7 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
                   (digit) => CalculatorButton(
                     buttonText: digit.toString(),
                     onPressed: () {
-                      final calculatorState = ref.read(calculatorProvider);
-                      if (calculatorState.symbol.isEmpty) {
-                        ref.read(calculatorProvider.notifier).setNum1(digit);
-                      } else {
-                        ref.read(calculatorProvider.notifier).setNum2(digit);
-                      }
+                      digitsCalc(digit);
                     },
                   ),
                 ),
@@ -92,8 +83,8 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
   }
 
   void calculateResult(CalculatorState calculatorState) {
-    final int num1 = calculatorState.num1;
-    final int num2 = calculatorState.num2;
+    final int num1 = int.parse(calculatorState.num1.join(''));
+    final int num2 = int.parse(calculatorState.num2.join(''));
     final String symbol = calculatorState.symbol;
     int result = 0;
 
@@ -117,5 +108,24 @@ class _CalcScreenState extends ConsumerState<CalcScreen> {
 
   void clearCalculator(CalculatorState calculatorState) {
     ref.read(calculatorProvider.notifier).clear();
+  }
+
+  void digitsCalc(digit) {
+    final calculatorState = ref.read(calculatorProvider);
+    if (calculatorState.symbol.isEmpty) {
+      ref.read(calculatorProvider.notifier).setNum1(digit);
+    } else {
+      ref.read(calculatorProvider.notifier).setNum2(digit);
+    }
+  }
+
+  void charCalc(char) {
+    if (char == '=') {
+      calculateResult(ref.read(calculatorProvider));
+    } else if (char == 'C') {
+      clearCalculator(ref.read(calculatorProvider));
+    } else {
+      ref.read(calculatorProvider.notifier).setSymbol(char);
+    }
   }
 }

@@ -6,21 +6,21 @@ final calculatorProvider =
 });
 
 class CalculatorState {
-  int num1;
-  int num2;
+  List<int> num1;
+  List<int> num2;
   int result;
   String symbol;
 
   CalculatorState({
-    this.num1 = 0,
-    this.num2 = 0,
+    this.num1 = const [],
+    this.num2 = const [],
     this.result = 0,
     this.symbol = '',
   });
 
   CalculatorState copyWith({
-    int? num1,
-    int? num2,
+    List<int>? num1,
+    List<int>? num2,
     int? result,
     String? symbol,
   }) {
@@ -40,12 +40,12 @@ class CalculatorNotifier extends StateNotifier<CalculatorState> {
     state = state.copyWith(symbol: symbol);
   }
 
-  void setNum1(int num1) {
-    state = state.copyWith(num1: num1);
+  void setNum1(int digit) {
+    state = state.copyWith(num1: [...state.num1, digit]);
   }
 
-  void setNum2(int num2) {
-    state = state.copyWith(num2: num2);
+  void setNum2(int digit) {
+    state = state.copyWith(num2: [...state.num2, digit]);
   }
 
   void setResult(int result) {
